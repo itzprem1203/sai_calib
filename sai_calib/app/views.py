@@ -4,8 +4,24 @@ from django.http import JsonResponse
 from django.shortcuts import render
 
 
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt  # Only if CSRF tokens are difficult to implement; remove if you want CSRF protection.
 def login(request):
-    return render(request,"app/login.html")
+    if request.method == 'POST':
+        userid = request.POST.get('userid')
+        password = request.POST.get('password')
+
+        # Check if credentials are correct
+        if userid == 'admin' and password == 'admin':
+            return JsonResponse({'redirect': '/index/'})  # Redirect URL to index page
+        else:
+            return JsonResponse({'error': 'Authentication is wrong. Please try again.'})
+
+    return render(request, "app/login.html")
+
 
 def index(request):
     return render(request,"app/index.html")

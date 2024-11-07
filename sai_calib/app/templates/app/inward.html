@@ -1,0 +1,794 @@
+{% extends 'app/layouts/main.html' %}
+{% load static %} 
+{% block title %}
+Inward page
+{% endblock title %}
+{% block content %}
+<style>
+    #box0{
+        height: 630px;
+        width: 1150px;
+        margin-left: 20px;
+        border: 2px solid black;
+        background-color:#f1c2f1;
+        
+    }
+
+    label {
+    display: inline-block;
+    width: 150px;
+    margin-top: 10px;
+    text-align:  right;
+    margin-left: 20px;
+    font-weight: bold;
+    
+}
+select {
+    margin-top: 10px;
+    box-sizing: border-box;
+    width: 20%;
+    height: 30px;
+    margin-left: 10px;
+}
+
+input{
+    margin-left: 10px;
+    width: 20%;
+}
+#customer_address{
+    height: 100px;
+    width: 400px;
+    margin-left: 30px;
+    margin-top: 10px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: rgb(199, 199, 241);
+    
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+th{
+    background-color: orange;
+}
+#add_new_btn{
+    margin-left: 40%;
+}
+.container_box{
+    height: 380px;
+    width: 1130px;
+    margin-left: 10px;
+    border: 2px solid black;
+    background-color: rgb(221, 246, 202);
+}
+#control_btn_div{
+    margin-left: 20%;
+    margin-top: 10px;
+}
+#cancel-btn{
+    height: 40px;
+    width: 130px;
+    background-color:yellow;
+    color: black;
+    text-align: center;
+    font-weight: bold;
+}
+
+#submit-btn{
+    height: 40px;
+    width: 130px;
+    background-color:green;
+    margin-left: 50px;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+}
+#delete-btn{
+    height: 40px;
+    width: 130px;
+    background-color:red;
+    margin-left: 50px;
+    color: white;
+    text-align: center;
+    font-weight: bold;  
+}
+#create_btn{
+    background-color:blue;
+    color: white;
+    font-weight: bold;
+}
+#refresh-btn1,#refresh-btn2 i {
+    font-size: 20px;  /* Adjust size of the icon */
+    color: #007bff;   /* Adjust color if needed */
+}
+
+#refresh-btn1,#refresh-btn2:hover i {
+    color: #0056b3;   /* Hover effect for the icon */
+}
+
+#notification {
+    display: none;
+    position: fixed;    
+    top: 40%;
+    left: 40%;
+    height: 120px;
+    width: 350px;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: black;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    z-index: 1000; 
+    border: 2px solid black;
+}
+.selected-row {
+    background-color: green;
+}
+
+.edit-cell {
+    width: 100%;
+    border: 1px solid #ddd;
+    margin-left: 0px;
+}
+
+
+</style>
+
+<div id="notification"></div>
+
+<div class="box0" id="box0">
+    <label for="search" style="width: 180px;margin-top: 20px;margin-left: 0px;">SEARCH CUSTOMER :</label>
+                <input list="customers" id="search-input" style="width: 400px;" onkeyup="fetchWorkOrders()">
+                    <datalist id="customers">
+                        {% for customer in customer_value %}
+                        <option value="{{ customer.customer_name }}" 
+                        data-address="{{ customer.address }}" 
+                        data-primary-email="{{ customer.primary_email }}">
+                    </option>
+                        {% endfor %}
+                    </datalist>
+    <button type="button" id="refresh-btn1" style="border: none; background: none; cursor: pointer;">
+        <i class="fa fa-refresh"></i>
+    </button>
+                    
+               
+    <label for="next_calibration" style="margin-left: 0px;">ORDER TYPE :</label>
+    <select  id="next_calibration" >
+        <option>SALES</option>
+        <option>SERVICE</option>
+        <option>CALIBRATIONS</option>
+    </select>
+    
+    <button type="submit" id="create_btn"> CREATE NEW</button><br>
+    
+    
+    
+    <label for="work_order_no" style="margin-left: 30px;">WORK ORDER NO :</label>
+    <input list="work_order_datalist" id="work_order_no" name="work_order_no">
+    <datalist id="work_order_datalist"></datalist>
+    <button type="button" id="refresh-btn2" style="border: none; background: none; cursor: pointer;">
+        <i class="fa fa-refresh"></i>
+    </button>
+
+    <label for="wo_date"  style="margin-left: 170px;" >WO.DATE :</label>
+    <input type="date" id="wo_date"><br>
+
+    <label for="customer_po_no" style="margin-left: 30px;">CUSTOMER PO NO :</label>
+    <input type="text" id="customer_po_no" >
+    
+    <label for="customer_ref_date" style="width: 180px;margin-left: 170px;">CUSTOMER REF DATE :</label>
+    <input type="date" id="customer_ref_date" ><br>
+
+    
+    <textarea id="customer_address"></textarea><br>
+
+    <div class="container_box" style="overflow-y: auto;">
+    <div id="setting_plug_trace">
+        <table border="1">
+            <thead>
+                <tr>
+                    <th >Sr.No</th>
+                    <th style="width: 15%;">Item</th>
+                    <th>HSN</th>
+                    <th>SI.No</th>
+                    <th>Id No</th>
+                    <th style="width: 10%;">Range</th>
+                    <th>Make</th>
+                    <th style="width: 5%;">Channels</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody-1">
+                
+            </tbody>
+            
+        </table>
+        <br>
+        <button  id="add_new_btn" onclick="addRow('setting_plug_trace', 8)">Add New</button>
+        <div id="control_btn_div"> 
+            <a href="/index/">
+                <button type="button" id="cancel-btn">BACK</button>
+            </a>
+            <button id="delete-btn">DELETE</button>
+            <button id="submit-btn">SAVE</button>
+
+           
+        </div>
+        <div>
+        </div>
+</div>
+<script>
+
+document.getElementById('refresh-btn1').addEventListener('click', function() {
+    document.getElementById('search-input').value = '';  // Clears the date input field
+});
+document.getElementById('refresh-btn2').addEventListener('click', function() {
+    document.getElementById('work_order_no').value = '';  // Clears the date input field
+
+     // Clear the other input fields
+     document.getElementById('wo_date').value = ''; 
+    document.getElementById('customer_po_no').value = ''; 
+    document.getElementById('customer_ref_date').value = ''; 
+    // Reset the ORDER TYPE select field to its default (first) option
+    document.getElementById('next_calibration').selectedIndex = 0; 
+
+    // Clear the table contents by removing all rows in the table body
+    document.getElementById('tableBody-1').innerHTML = ''; 
+});
+
+///////////////////////////////////////////////////////////////////////////
+
+
+var rowData = {};
+
+function addRow(tableId, numColumns) {
+    var tableBody = document.querySelector('#' + tableId + ' tbody');
+    var newRow = tableBody.insertRow(tableBody.rows.length);
+
+    // Mark the row as new
+    newRow.setAttribute('data-new', 'true');
+
+    // Get the work_order_no input value
+    var workOrderNo = document.getElementById('work_order_no').value;
+
+    // Calculate the new Sr.No based on the work_order_no
+    var serialSuffix = String(tableBody.rows.length).padStart(2, '0');  // e.g., "01", "02", etc.
+    var serialNumber = workOrderNo + '/' + serialSuffix;  // e.g., "SAI/CAL/24-25/001/01"
+
+    // Add click event to highlight the row on click
+    newRow.addEventListener('click', function(event) {
+        var rows = tableBody.querySelectorAll('tr');
+        rows.forEach(function(row) {
+            row.style.backgroundColor = '';  // Reset background color for all rows
+        });
+        event.currentTarget.style.backgroundColor = 'red';  // Set background color for the clicked row
+    });
+
+    for (var i = 0; i < numColumns; i++) {
+        var cell = newRow.insertCell(i);
+
+        if (i === 0) { // Sr.No column (index 0)
+            cell.textContent = serialNumber;
+        } else if (i === 5) { // Range column (index 5)
+            var selectRange = document.createElement('select');
+            selectRange.style.width = '100%';
+            selectRange.style.marginLeft = '0px';
+            selectRange.style.marginTop = '0px';
+            selectRange.innerHTML = `
+                <option value="">Select Range</option>
+                <option value="± 1 mm" >± 1 mm</option>
+                <option value="± 2 mm" >± 2 mm</option>
+                <option value="± 20 um" >± 20 um</option>
+                <option value="± 40 um" >± 40 um</option>
+            `;
+            cell.appendChild(selectRange);
+        } else if (i === 7) { // Channels column (index 7)
+            var selectChannels = document.createElement('select');
+            selectChannels.style.width = '100%';
+            selectChannels.style.marginLeft = '0px';
+            selectChannels.style.marginTop = '0px';
+            selectChannels.innerHTML = `
+                <option value="">Select Channels</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+            `;
+            cell.appendChild(selectChannels);
+        } else {
+            // For all other columns, add a normal text input
+            var input = document.createElement('input');
+            input.type = 'text';
+            input.style.width = '100%';
+            input.style.marginLeft = '0';
+            input.style.padding = '0';
+            input.style.border = 'none';
+            input.style.outline = 'none';
+            cell.appendChild(input);
+        }
+    }
+
+    // Initialize the rowData for the new row
+    if (!rowData[tableId]) {
+        rowData[tableId] = [];
+    }
+    rowData[tableId].push({
+        rowIndex: newRow.rowIndex,
+        values: Array.from(newRow.cells).map(cell => {
+            var inputElement = cell.querySelector('input, select');
+            return inputElement ? inputElement.value : '';  // Check if input exists
+        })
+    });
+}
+
+
+/////////////////////////////////////////////////////////////////////////
+
+document.getElementById('search-input').addEventListener('input', function() {
+    const inputValue = this.value;
+    const options = document.getElementById('customers').options;
+    
+    for (let i = 0; i < options.length; i++) {
+        if (options[i].value === inputValue) {
+            // Get the customer name, address, and primary email
+            const customerName = options[i].value; // customer name
+            const address = options[i].getAttribute('data-address') || ''; // address
+            const primaryEmail = options[i].getAttribute('data-primary-email') || ''; // primary email
+
+            // Combine these into a single string
+            document.getElementById('customer_address').value = 
+                ` ${customerName}\n ${address}\n ${primaryEmail}`;
+            break;
+        }
+    }
+});
+/////////////////////////////////////////////////////////////////////////
+
+
+// Track the selected row ID
+let selectedRowId = null;
+
+// Function to select row and change background color to green
+$(document).on('click', '#tableBody-1 tr', function() {
+    // Remove highlight from previously selected row
+    $('#tableBody-1 tr').removeClass('selected-row');
+    
+    // Add highlight (green background) to the clicked row
+    $(this).addClass('selected-row');
+    
+    // Get the row ID from data-row-id attribute
+    selectedRowId = $(this).data('row-id');
+    
+    // Log the selected row ID to the console
+    console.log("Selected Row ID:", selectedRowId);
+
+    // Enable inline editing of cells in the selected row
+    $(this).find('td').each(function(index) {
+        // Check if the cell is not already in edit mode
+        if (!$(this).hasClass('editing')) {
+            // For the Range column (6th cell, index 5)
+            if (index === 5) {
+                const selectRange = document.createElement('select');
+                selectRange.style.width = '100%';
+                selectRange.style.margin = '0px';
+                selectRange.innerHTML = `
+                    <option value="">Select Range</option>
+                    <option value="± 1 mm">± 1 mm</option>
+                    <option value="± 2 mm">± 2 mm</option>
+                    <option value="± 20 um">± 20 um</option>
+                    <option value="± 40 um">± 40 um</option>
+                `;
+                
+                // Set the selected option based on the existing cell value
+                selectRange.value = $(this).text().trim();
+                $(this).html(selectRange);
+            }
+            // For the Channels column (8th cell, index 7)
+            else if (index === 7) {
+                const selectChannels = document.createElement('select');
+                selectChannels.style.width = '100%';
+                selectChannels.style.margin = '0px';
+                selectChannels.innerHTML = `
+                    <option value="">Select Channels</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                `;
+                
+                // Set the selected option based on the existing cell value
+                selectChannels.value = $(this).text().trim();
+                $(this).html(selectChannels);
+            } 
+            // For other cells, including the first column (inward_no)
+            else {
+                const cellValue = $(this).text().trim();
+                $(this).html(`<input type="text" value="${cellValue}" class="edit-cell">`);
+            }
+            $(this).addClass('editing');  // Mark the cell as being edited
+        }
+    });
+});
+
+// Function to collect the input values correctly
+function collectData() {
+    let tableRows = [];
+    $('#tableBody-1 tr').each(function() {
+        var row = $(this);
+        var rowData = {
+            inward_no: row.find('td:nth-child(1) input').length ? row.find('td:nth-child(1) input').val() : row.find('td:nth-child(1)').text().trim(),
+            item: row.find('td:nth-child(2) input').val(),
+            hsn: row.find('td:nth-child(3) input').val(),
+            srNo: row.find('td:nth-child(4) input').val(),
+            idNo: row.find('td:nth-child(5) input').val(),
+            range: row.find('td:nth-child(6) select').val(),
+            make: row.find('td:nth-child(7) input').val(),
+            channels: row.find('td:nth-child(8) select').val()
+        };
+        
+        // Only push rows with a valid inward_no or item value to avoid empty entries
+        if (rowData.inward_no || rowData.item) {
+            tableRows.push(rowData);
+        }
+    });
+
+    // Log the collected data to the console
+    console.log("Collected Data:", tableRows);
+    
+    return tableRows;
+}
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////
+
+$(document).ready(function() {
+    $('#submit-btn').click(function() {
+    // Collect input values
+    var customerName = $('#search-input').val();
+    var woDate = $('#wo_date').val();
+    var workOrderNo = $('#work_order_no').val();
+    var customerPoNo = $('#customer_po_no').val();
+    var customerRefDate = $('#customer_ref_date').val();
+    var orderType = $('#next_calibration').val();
+    var customerAddress = $('#customer_address').val();
+
+   
+    // Use the collectData function to get table row data
+    const tableRows = collectData(); // Call the collectData function
+    
+    // Bundle all data into one JSON object
+    var formData = {
+        customerName: customerName,
+        woDate: woDate,
+        workOrderNo: workOrderNo,
+        customerPoNo: customerPoNo,
+        customerRefDate: customerRefDate,
+        orderType: orderType,
+        customerAddress: customerAddress,
+        items: tableRows
+    };
+
+    console.log("The data being sent to the backend (views.py):", formData);
+
+    // CSRF token
+    const csrftoken = getCookie('csrftoken');
+
+    // Send data using Fetch API
+    fetch('/inward/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Success:', data);
+        showNotification('Data saved successfully', true);
+
+        // Adjust this part to check for duplicates based on specific fields
+        if (data.skipped_items && data.skipped_items.length > 0) {
+            let skippedItems = data.skipped_items.map(item => item.srNo).join(', ');
+            alert('The following items with the same Serial No., ID No., and HSN code were not saved again: ' + skippedItems);
+
+            // Remove the rows with skipped items from the table based on these fields
+            data.skipped_items.forEach(function(skippedItem) {
+                $('#tableBody-1 tr').each(function() {
+                    var row = $(this);
+                    var srNo = row.find('td:nth-child(4) input').val();
+                    var idNo = row.find('td:nth-child(5) input').val();
+
+                    if (srNo === skippedItem.srNo && idNo === skippedItem.idNo ) {
+                        row.remove();
+                    }
+                });
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('Error saving data: ' + error.message, false);
+    });
+});
+
+});
+
+
+
+// Function to get the CSRF token
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+///////////////////////////////////////////////////////////////////
+function fetchWorkOrders() {
+    const customerInput = $('#search-input'); // Get the input field as a jQuery object
+    const workOrderDatalist = $('#work_order_datalist'); // Reference to the work order datalist
+    const workOrderInput = $('#work_order_no'); // Reference to the work order input field
+
+    // Clear the work order input field and datalist
+    // workOrderInput.val(''); // Clear the work order input field
+    // workOrderDatalist.empty(); // Clear previous work order options
+
+    // Get the selected customer name
+    const inputValue = customerInput.val(); 
+
+    // Clear the work order datalist and input field if customer input is empty
+    if (!inputValue) {
+        workOrderDatalist.empty(); // Clear work order datalist if customer input is empty
+        return; // Exit the function early
+    }
+
+    // Clear the previous options in the work order datalist
+    workOrderDatalist.empty(); 
+
+    // AJAX POST request to fetch work orders for the selected customer
+    $.ajax({
+        type: 'POST',
+        url: '/inward/', // Your AJAX endpoint
+        data: {
+            'customer_name': inputValue,
+            'csrfmiddlewaretoken': '{{ csrf_token }}' // Include CSRF token for Django
+        },
+        success: function(data) {
+            // Check if any work orders were returned
+            if (data.length > 0) {
+                // Populate the datalist with the received work orders
+                $.each(data, function(index, workOrder) {
+                    const option = $('<option>').val(workOrder.work_order_no);
+                    workOrderDatalist.append(option);
+                });
+            } else {
+                // Optionally, you can add a message for no work orders found
+                const option = $('<option>').val('No work orders found');
+                workOrderDatalist.append(option);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching work orders:', error);
+        }
+    });
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+$(document).ready(function() {
+    // Triggered when a work order is selected from the datalist
+    $('#work_order_no').on('change', function() {
+        const workOrderNo = $(this).val(); // Get the selected work order number
+
+        if (workOrderNo) {
+            // Make an AJAX call to fetch the data for the selected work order
+            $.ajax({
+                type: 'GET',
+                url: '/inward/', // Replace with your actual endpoint
+                data: {
+                    'work_order_no': workOrderNo
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Populate the respective fields with the data received
+                        $('#wo_date').val(response.wo_date);
+                        $('#customer_po_no').val(response.customer_po_no);
+                        $('#customer_ref_date').val(response.customer_ref_date);
+                        $('#next_calibration').val(response.order_type);
+                        $('#customer_address').val(response.customer_address);
+                        
+                        // If you have a table to populate:
+                        const tableBody = $('#tableBody-1');
+                        tableBody.empty(); // Clear previous rows
+                        
+                        // Populate table with items if any exist
+                        if (response.items) {
+                            response.items.forEach((item, index) => {
+                                // Assuming `item.id_no` is a unique identifier for each row
+                                const row = `<tr data-row-id="${item.inward_no}">
+                                    <td>${item.inward_no}</td>
+                                    <td>${item.item}</td>
+                                    <td>${item.hsn}</td>
+                                    <td>${item.sr_no}</td>
+                                    <td>${item.id_no}</td>
+                                    <td>${item.range}</td>
+                                    <td>${item.make}</td>
+                                    <td>${item.channels}</td>
+                                </tr>`;
+                                tableBody.append(row);
+                            });
+                        }
+                    } else {
+                        console.error('Error fetching work order data:', response.error);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching work order data:', error);
+                }
+            });
+        }
+    });
+});
+
+///////////////////////////////////////////////////////////////////////
+
+$(document).ready(function() {
+    $('#create_btn').on('click', function() {
+         // Clear all form input values
+         $('#search-input').val('');
+        $('#work_order_no').val('');
+        $('#wo_date').val('');
+        $('#customer_po_no').val('');
+        $('#customer_ref_date').val('');
+        $('#customer_address').val('');
+        $('#next_calibration').prop('selectedIndex', 0); // Reset the select to the first option
+        $('#tableBody-1').empty(); // Clear all table rows
+
+        $.ajax({
+            url: '{% url "inward" %}?generate_inward_no=true',  // Pass generate_inward_no in the URL
+            method: 'GET',
+            success: function(response) {
+                if (response.new_inward_no) {
+                    $('#work_order_no').val(response.new_inward_no);  // Set the new inward_no
+                } else {
+                    alert('Could not generate new inward number.');
+                }
+            },
+            error: function() {
+                alert('Error occurred while generating inward number.');
+            }
+        });
+    });
+});
+
+
+////////////////////////////////////////////////////////////////////////
+
+
+
+$('#delete-btn').on('click', function() {
+    if (selectedRowId) {
+        console.log("Attempting to delete work order ID:", selectedRowId); // Log for debugging
+
+        // Send the delete request to the backend using Ajax
+        $.ajax({
+            url: '/inward/',  // Ensure this URL matches your Django URL configuration
+            type: 'DELETE',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')  // CSRF protection
+            },
+            data: JSON.stringify({ work_order_id: selectedRowId }),
+            contentType: 'application/json',
+            success: function(response) {
+                if (response.success) {
+                    // Remove the row from the DOM
+                    $('tr[data-row-id="' + selectedRowId + '"]').remove();
+                    selectedRowId = null;  // Reset the selected row ID
+                    showNotification('Row deleted successfully!', true);
+                } else {
+                    showNotification('Failed to delete row: ' + response.error, false);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error deleting row:', xhr.responseText); // Log the error for debugging
+                showNotification('Error deleting row: ' + error, false);
+            }
+        });
+    } else {
+        alert('Please select a row to delete.');
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ // Function to show a notification with an OK button
+ function showNotification(message, isSuccess) {
+    var notificationElement = document.getElementById('notification');
+    notificationElement.textContent = message;
+
+    if (isSuccess) {
+        notificationElement.style.backgroundColor = 'lightgreen';
+    } else {
+        notificationElement.style.backgroundColor = 'coral';
+    }
+
+    // Center the notification vertically and horizontally
+    notificationElement.style.display = 'flex';
+    notificationElement.style.flexDirection = 'column';
+    notificationElement.style.alignItems = 'center';
+    notificationElement.style.textAlign = 'center';
+    notificationElement.style.justifyContent = 'center';
+    notificationElement.style.top = '50%';
+    notificationElement.style.left = '50%';
+    notificationElement.style.transform = 'translate(-50%, -50%)';
+    notificationElement.style.zIndex = '1000';
+
+    // Display the notification
+    notificationElement.style.display = 'block';
+
+    // Hide the notification after 2 seconds
+    setTimeout(function() {
+        notificationElement.style.display = 'none';
+    }, 2000);
+}
+
+
+window.addEventListener('DOMContentLoaded', (event) => {
+            var inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.setAttribute('autocomplete', 'off');
+            });
+        });
+
+
+</script>
+{% endblock content %}

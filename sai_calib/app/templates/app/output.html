@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+{% load static %} 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
+    <title>A4 Sheet</title>
+    <style>
+
+#a4-content {
+    margin: 0;
+}
+
+@media print {
+    #a4-content {
+        margin-top: 0; /* Remove any margin on print */
+        padding-top: 0; /* Remove padding at the top */
+    }
+}
+
+
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Aligns items to the top */
+    height: 150vh;
+    background-color: #f0f0f0;
+}
+
+.a4-container {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    align-items: center;
+}
+
+.a4-sheet {
+    width: 198mm; /* A4 width */
+    height: 285mm; /* A4 height */
+    border: 2px solid #339b8a; /* Border width and color */
+    background-color: white; /* Background color */
+    padding: 20px; /* Padding inside the sheet */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: shadow effect */
+    margin-top: 20px; /* Top margin for spacing */
+    position: relative; /* Set position relative for absolute children */
+}
+
+        #line1 {
+            position: absolute;
+            top: 4.2cm; /* Position the line 5.2 cm from the top */
+            left: 50%; /* Position the line in the center */
+            transform: translateX(-50%); /* Center the line */
+            width: 100%; /* Line width */
+            height: 1px; /* Line thickness */
+            background-color: #000; /* Line color */
+        }
+        #line2 {
+            position: absolute;
+            top: 7.6cm; /* Position the line 5.2 cm from the top */
+            left: 50%; /* Position the line in the center */
+            transform: translateX(-50%); /* Center the line */
+            width: 100%; /* Line width */
+            height: 1px; /* Line thickness */
+            background-color: #000; /* Line color */
+        }
+        #line3 {
+            position: absolute;
+            top: 12cm; /* Position the line 5.2 cm from the top */
+            left: 50%; /* Position the line in the center */
+            transform: translateX(-50%); /* Center the line */
+            width: 100%; /* Line width */
+            height: 1px; /* Line thickness */
+            background-color: #000; /* Line color */
+        }
+        #line4 {
+            position: absolute;
+            top: 16cm; /* Position the line 5.2 cm from the top */
+            left: 50%; /* Position the line in the center */
+            transform: translateX(-50%); /* Center the line */
+            width: 100%; /* Line width */
+            height: 1px; /* Line thickness */
+            background-color: #000; /* Line color */
+        }
+
+        #line5 {
+            position: absolute;
+            top: 21.4cm; /* Position the line 5.2 cm from the top */
+            left: 50%; /* Position the line in the center */
+            transform: translateX(-50%); /* Center the line */
+            width: 100%; /* Line width */
+            height: 1px; /* Line thickness */
+            background-color: #000; /* Line color */
+        }
+        #line6 {
+            position: absolute;
+            top: 26.8cm; /* Position the line 5.2 cm from the top */
+            left: 50%; /* Position the line in the center */
+            transform: translateX(-50%); /* Center the line */
+            width: 100%; /* Line width */
+            height: 1px; /* Line thickness */
+            background-color: #000; /* Line color */
+        }
+        
+        #sai_image{
+            height: 120px;
+            width: 105px;
+        }
+
+        .header {
+            text-align: center; /* Center align the header */
+            margin-top: -130px;
+            margin-left: 50px;
+            font-size: 35px; /* Font size for the header */
+            color: #339b8a;
+            
+        }
+        .subheader {
+            text-align: center; /* Center align the subheader */
+            font-size: 20px; /* Font size for the subheader */
+            font-weight: bold;
+            margin-top: 5px; /* Space above the subheader */
+            font-style: oblique;
+        }
+        
+        .contact-info {
+            text-align: center; /* Center align the contact information */
+            font-size: 18px; /* Font size for the contact info */
+            margin-top: -10px;
+            margin-left: 30px;
+           font-style: oblique;
+           font-variant: inherit;
+           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .vertical-line {
+            position: absolute;
+            top: 4.2cm;
+            bottom: 0;
+            left: 47%;
+            height: 7.8cm;
+            width: 1px;
+            background-color: black;
+            transform: translateX(-50%); /* This centers the line exactly */
+        }
+        .container-1{
+            height: 120px;
+            width: 90mm;
+            margin-top: 10px;
+        }
+        .container1_subheader1 {
+            margin-left: 5px;
+            font-size: 28px; /* Font size for the subheader */
+            font-weight: 500;
+            margin-top: 10px; /* Space above the subheader */
+            font-style: oblique;
+            text-align: center;
+        }
+
+        .container-2{
+            height: 120px;
+            width: 380px;
+            margin-top: -130px;
+            margin-left: 380px;
+            
+        }
+        
+
+        label {
+    display: inline-block;
+    width: 150px;
+    margin-top: 8px;
+    text-align:  left;
+    margin-left: 20px; 
+    position: relative;   
+}
+
+label::after {
+    content: ":";
+    position: absolute;
+    right: 0; /* Align the colon to the right edge of the label */
+  }
+
+
+/* Remove outline from input fields */
+  input[type="text"] {
+    margin-left: 10px;
+    font-weight: 500;
+    outline: none;
+    border: 1px solid white; /* Add a border if needed */
+    padding: 3px;
+    border-radius: 4px;
+  }
+
+  /* Optional: Add focus effect if you want */
+  input[type="text"]:focus {
+    border-color: #66afe9;
+    box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+  }
+       
+
+        .container-3{
+            height: 120px;
+            width: 90mm;
+            margin-top: 30px;
+        }
+        .container3_subheader3{
+            font-size: 10px; /* Font size for the subheader */
+            font-style: oblique;
+            text-align: center;
+            height: 120px;
+        }
+        #container3_textarea{
+            height: 130px;
+            width: 100%; 
+            margin-top: 10px;
+            border: 1px solid white; /* Add a border if needed */
+           font-weight: 400;
+           font-size: 14px;
+           font-style: normal;
+           font-variant: inherit;
+           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            
+        }
+        .container-4{
+            height: 155px;
+            width: 380px;
+            margin-top: -130px;
+            margin-left: 380px;
+            background-color: red;
+            
+        }
+        .container4_subheader4{
+            height: 155px;
+            width: 100%;
+            background-color: white;
+        }
+        .container-5{
+           height: 170px;
+          
+           margin-top: 8px;
+            width: 768px;
+            background-color: white;
+        }
+        .container-6{
+           height: 195px;
+           margin-top: -15px;
+            width: 768px;
+            background-color: white;
+        }
+        .container-7{
+           height: 190px;
+           margin-top: 5px;
+            width: 768px;
+            background-color: white;
+           
+        }
+
+        .container-8{
+           height: 87px;
+            width: 768px;
+            background-color: white;
+            margin-top: 20px;
+        }
+        .container-8-1{
+           height: 87px;
+            width: 768px;
+            background-color: white;
+            margin-top: 20px;
+        }
+
+        .container8_sub1{
+            height: 50px;
+            width: 200px;
+            background-color: white;
+            
+        }
+        .container8_sub2{
+            margin-left: 74%;
+            margin-top: -50px;
+            height: 50px;
+            width: 200px;
+            background-color: white;
+          
+        }
+
+        footer {
+        border-top: 5px solid #339b8a;
+        height: 50px;
+        width: 100vw;
+        text-align: center;
+        margin: 0 auto;
+        font-size: 12px;
+        color: #339b8a;
+    }
+
+        .button-container {
+    text-align: center; /* To center the button horizontally */
+    margin-top: auto; /* Pushes the button to the bottom */
+}
+th, td {
+    border: 1px solid black;
+    padding: 0px;
+    margin: 0;
+    text-align: center;
+}
+
+    </style>
+</head>
+<body>
+    <div class="a4-container">
+        <button class="button-container" onclick="downloadPDF()">Download as PDF</button>
+        <div class="a4-sheet" id="a4-content">
+        <img id="sai_image" src="{% static 'images/sai.jpg' %}" alt="SAI Accurate Instruments">
+    
+        <div class="header"><strong>SAI ACCURATE INSTRUMENTS</strong></div>
+        <div class="subheader">(Any Array Of Metrology Products)</div>
+        
+        <div class="contact-info">
+            <p>54 GVT COMPLEX, NAZARATHPET, CHENNAI-600123<br>
+            E-Mail: saiaccurate@gmail.com | www.saiaccurate.com<br>
+            PH: 9344438999 / 97 87 37 5999</p>
+        </div>
+
+        <div class="line" id="line1"></div> 
+        <div class="vertical-line"></div>
+        <div class="container-1">
+            <div class="container1_subheader1">Calibration Certificate Of <br> Electronic Air Gauge Unit <br>(DRO Type)</div> 
+        </div>
+
+        <div class="container-2">
+           <div class="container_subheader2" > 
+            <label for="certificate_no_op">Certificate no</label>
+            <input type="text" id="certificate_no_op" name="certificate_no_op"><br>
+            <label for="date_of_issue_op">Date of Issue</label>
+            <input type="text" id="date_of_issue_op" name="date_of_issue_op" ><br>
+            <label for="date_of_calib_op">Date of Calibration</label>
+            <input type="text" id="date_of_calib_op" name="date_of_calib_op"><br>
+            <label for="next_calibration_op">Next Calibration Due</label>
+            <input type="text" id="next_calibration_op" name="next_calibration_op">
+           </div> 
+        </div>
+
+        <div class="line" id="line2"></div>
+        
+        <div class="container-3">
+            <header style="margin-top: -20px;">NAME AND ADDRESS OF CUSTOMER</header>
+            <div class="container3_subheader3">
+                <textarea id="container3_textarea"></textarea>
+            </div> 
+        </div>
+        <div class="container-4">
+            <div class="container4_subheader4" > 
+                <header style="margin-top: 10px;">DESCRIBTION OF INSTRUMENTS</header>
+                <label for="range_op" style="margin-top: 0px;">Range</label>
+                <input type="text" id="range_op" name="range_op"><br>
+                <label for="lc_op">L.C</label>
+                <input type="text" id="lc_op" name="lc_op" ><br>
+                <label for="identification_no_op">Identification No</label>
+                <input type="text" id="identification_no_op" name="identification_no_op"><br>
+                <label for="si_no_op">SI.No</label>
+                <input type="text" id="si_no_op" name="si_no_op"><br>
+                <label for="make_op">Make</label>
+                <input type="text" id="make_op" name="make_op">
+         </div>
+        </div>
+        <div class="line" id="line3"></div> 
+        <div class="container-5">
+            <label for="customer_ref_op" style="margin-top: 0px;">Customer's Reference</label>
+            <input type="text" id="customer_ref_op" name="customer_ref_op">
+            <label for="date_op">Ref Date</label>
+            <input type="text" id="date_op" name="date_op" ><br>
+
+            <label for="inward_no_op">Our Inward No</label>
+            <input type="text" id="inward_no_op" name="inward_no_op">
+            <label for="date_of_receipt_op">Inward Date</label>
+            <input type="text" id="date_of_receipt_op" name="date_of_receipt_op"><br>
+            
+            <label for="location_op">Location</label>
+            <input type="text" id="location_op" name="location_op">
+            <label for="calib_no_op">Calibration No</label>
+            <input type="text" id="calib_no_op" name="calib_no_op"><br>
+            <label for="environment_op" style="width: 200px;">Environment Condition</label>
+            <input type="text" id="environment_op" name="environment_op"><br>
+            <label for="uncertainity_op" style="width: 200px;">Uncertainity Of Measurement</label>
+            <input type="text" id="uncertainity_op" name="uncertainity_op" style="width: 500px;">
+        </div>
+
+        <div class="line" id="line4"></div>
+        <div class="container-6">
+            <header style="margin-top: -16px;">REFERENCE STANDARD & EQUIPMENTS USED FOR CALIBRATION</header>
+            <table border="1" cellpadding="4" cellspacing="0" style="margin-top: 5px; width: 200mm;text-align: center;">
+                <thead>
+                    <tr>
+                        <th>Sr.No</th>
+                        <th style="width:25%;">Name of the Master</th>
+                        <th style="width: 10%;">Id.No.</th>
+                        <th style="width:22%;">Calibration No</th>
+                        <th style="width: 15%;">Valid Upto</th>
+                        <th style="width:28%;">Traceability</th> 
+                    </tr>
+                </thead>
+                <tbody id="tableBody-1" style="display: none;">
+                    {% for data in SettingPlugTrace_value %}
+                    <tr data-id="{{ data.id }}">
+                        <td>{{ forloop.counter }}</td>
+                        <td><input type="text" value="{{ data.master_name }}" style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                        <td><input type="text" value="{{ data.id_no }}" style="width: 100%; box-sizing: border-box; margin-left: 0px;text-align: center;"></td>
+                        <td><input type="text" value="{{ data.calibration_report_no }}" style="width: 100%; box-sizing: border-box; margin-left: 0px;text-align: center;"></td>
+                        <td><input type="text" value="{{ data.valid_upto }}" style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                        <td><input type="text" value="{{ data.traceability }}" style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tbody id="tableBody-2" style="display: none;" >
+                    {% for data in SettingRingTrace_value %}
+                    <tr data-id="{{ data.id }}">
+                        <td>{{ forloop.counter }}</td>
+                        <td><input type="text" value="{{ data.master_name }}" style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                        <td><input type="text" value="{{ data.id_no }}" style="width: 100%; box-sizing: border-box; margin-left: 0px;text-align: center;"></td>
+                        <td><input type="text" value="{{ data.calibration_report_no }}" style="width: 100%; box-sizing: border-box; margin-left: 0px;text-align: center;"></td>
+                        <td><input type="text" value="{{ data.valid_upto }}" style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                        <td><input type="text" value="{{ data.traceability }}" style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="line" id="line5"></div> 
+        <div class="container-7">
+            <header style="text-align: center;font-weight: bold; margin-top: 10px;">CALIBRATION RESULT-1</header>
+            <div class="subheader" style="font-size: 12px; font-weight: 500;margin-top: 0px;">(All Values are in mm)</div>
+
+            <table border="1" cellpadding="4" cellspacing="0" style="margin-top: 0px; width: 200mm;text-align: center;">
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">Sr.No</th>
+                        <th style="width:30%;">Parameter</th>
+                        <th style="width: 15%;">Ref Size</th>
+                        <th style="width:15%;">SET</th>
+                        <th style="width: 20%;">Observation Size</th>
+                        <th style="width:15%;">Error</th> 
+                    </tr>
+                </thead>
+                    <tbody id="tableBody-3-1" style="display: none;">
+                        {% for data in SettingPlugMaster_value%}
+                        <tr data-id="{{ data.id }}">
+                            <td>{{ forloop.counter }}</td>
+                            <td><input type="text" value="{{ data.parameter_name }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td><input type="text" value="{{ data.ref_size }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td><input type="text" value="{{ data.nominal }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                    <tbody id="tableBody-4-1" style="display: none;" >
+                        {% for data in SettingRingMaster_value%}
+                        <tr data-id="{{ data.id }}">
+                            <td>{{ forloop.counter }}</td>
+                            <td><input type="text" value="{{ data.parameter_name }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td><input type="text" value="{{ data.ref_size }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td><input type="text" value="{{ data.nominal }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+            </table>
+            
+        </div> 
+
+
+        <div class="line" id="line6"></div> 
+        <div class="container-8">
+            <header style="text-align: center;font-size: small;">..... END OF CERTIFICATE .....</header>
+            <div class="container8_sub1">
+                <input type="text" class="calibration_engineer_op" style="width: 150px; margin-left: 25px;">
+                <p style="text-align: center; margin-top: 5px;">Calibration Engineer</p>
+            </div>
+            <div class="container8_sub2">
+                <input type="text" class="quality_manager_op" style="width: 150px; margin-left: 25px;">
+                <p style="text-align: center; margin-top: 5px;">Quality Manager</p>
+            </div>
+        </div>
+            <footer style="border-top: 5px solid #339b8a; height: 50px; width: 199mm;">
+                <div class="scale-footer" style="margin-top: -25px;"></div>
+                <!-- The footer content will be generated dynamically -->
+            </footer>
+        
+    </div>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+    <div class="a4-sheet" id="a4-content1">
+        <div class="container-7" style="margin-top: -10px;" id="container-7-2">
+            <header style="text-align: center;font-weight: bold; margin-top: 0px;">CALIBRATION RESULT-2</header>
+            <div class="subheader" style="font-size: 12px; font-weight: 500;margin-top: 0px;">(All Values are in mm)</div>
+
+            <table border="1" cellpadding="4" cellspacing="0" style="margin-top: 0px; width: 200mm;text-align: center;">
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">Sr.No</th>
+                        <th style="width:30%;">Parameter</th>
+                        <th style="width: 15%;">Ref Size</th>
+                        <th style="width:15%;">SET</th>
+                        <th style="width: 20%;">Observation Size</th>
+                        <th style="width:15%;">Error</th> 
+                    </tr>
+                </thead>
+                    <tbody id="tableBody-3-2" style="display: none;">
+                        {% for data in SettingPlugMaster_value%}
+                        <tr data-id="{{ data.id }}">
+                            <td>{{ forloop.counter }}</td>
+                            <td><input type="text" value="{{ data.parameter_name }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td><input type="text" value="{{ data.ref_size }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td><input type="text" value="{{ data.nominal }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                    <tbody id="tableBody-4-2" style="display: none;" >
+                        {% for data in SettingRingMaster_value%}
+                        <tr data-id="{{ data.id }}">
+                            <td>{{ forloop.counter }}</td>
+                            <td><input type="text" value="{{ data.parameter_name }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td><input type="text" value="{{ data.ref_size }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td><input type="text" value="{{ data.nominal }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+            </table> 
+        </div> 
+
+
+        <div class="container-7" id="container-7-3">
+            <header style="text-align: center;font-weight: bold; margin-top: 10px;">CALIBRATION RESULT-3</header>
+            <div class="subheader" style="font-size: 12px; font-weight: 500;margin-top: 0px;">(All Values are in mm)</div>
+
+            <table border="1" cellpadding="4" cellspacing="0" style="margin-top: 0px; width: 200mm;text-align: center;">
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">Sr.No</th>
+                        <th style="width:30%;">Parameter</th>
+                        <th style="width: 15%;">Ref Size</th>
+                        <th style="width:15%;">SET</th>
+                        <th style="width: 20%;">Observation Size</th>
+                        <th style="width:15%;">Error</th> 
+                    </tr>
+                </thead>
+                    <tbody id="tableBody-3-3" style="display: none;">
+                        {% for data in SettingPlugMaster_value%}
+                        <tr data-id="{{ data.id }}">
+                            <td>{{ forloop.counter }}</td>
+                            <td><input type="text" value="{{ data.parameter_name }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td><input type="text" value="{{ data.ref_size }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td><input type="text" value="{{ data.nominal }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                    <tbody id="tableBody-4-3" style="display: none;" >
+                        {% for data in SettingRingMaster_value%}
+                        <tr data-id="{{ data.id }}">
+                            <td>{{ forloop.counter }}</td>
+                            <td><input type="text" value="{{ data.parameter_name }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td><input type="text" value="{{ data.ref_size }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td><input type="text" value="{{ data.nominal }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+            </table> 
+        </div> 
+
+
+        <div class="container-7" id="container-7-4">
+            <header style="text-align: center;font-weight: bold; margin-top: 10px;">CALIBRATION RESULT-4</header>
+            <div class="subheader" style="font-size: 12px; font-weight: 500;margin-top: 0px;">(All Values are in mm)</div>
+
+            <table border="1" cellpadding="4" cellspacing="0" style="margin-top: 0px; width: 200mm;text-align: center;">
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">Sr.No</th>
+                        <th style="width:30%;">Parameter</th>
+                        <th style="width: 15%;">Ref Size</th>
+                        <th style="width:15%;">SET</th>
+                        <th style="width: 20%;">Observation Size</th>
+                        <th style="width:15%;">Error</th> 
+                    </tr>
+                </thead>
+                    <tbody id="tableBody-3-4" style="display: none;">
+                        {% for data in SettingPlugMaster_value%}
+                        <tr data-id="{{ data.id }}">
+                            <td>{{ forloop.counter }}</td>
+                            <td><input type="text" value="{{ data.parameter_name }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td><input type="text" value="{{ data.ref_size }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td><input type="text" value="{{ data.nominal }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                    <tbody id="tableBody-4-4" style="display: none;" >
+                        {% for data in SettingRingMaster_value%}
+                        <tr data-id="{{ data.id }}">
+                            <td>{{ forloop.counter }}</td>
+                            <td><input type="text" value="{{ data.parameter_name }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td><input type="text" value="{{ data.ref_size }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td><input type="text" value="{{ data.nominal }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+            </table> 
+        </div> 
+
+
+        <div class="container-7" id="container-7-5">
+            <header style="text-align: center;font-weight: bold; margin-top: 10px;">CALIBRATION RESULT-5</header>
+            <div class="subheader" style="font-size: 12px; font-weight: 500;margin-top: 0px;">(All Values are in mm)</div>
+
+            <table border="1" cellpadding="4" cellspacing="0" style="margin-top: 0px; width: 200mm;text-align: center;">
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">Sr.No</th>
+                        <th style="width:30%;">Parameter</th>
+                        <th style="width: 15%;">Ref Size</th>
+                        <th style="width:15%;">SET</th>
+                        <th style="width: 20%;">Observation Size</th>
+                        <th style="width:15%;">Error</th> 
+                    </tr>
+                </thead>
+                    <tbody id="tableBody-3-5" style="display: none;">
+                        {% for data in SettingPlugMaster_value%}
+                        <tr data-id="{{ data.id }}">
+                            <td>{{ forloop.counter }}</td>
+                            <td><input type="text" value="{{ data.parameter_name }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td><input type="text" value="{{ data.ref_size }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td><input type="text" value="{{ data.nominal }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                    <tbody id="tableBody-4-5" style="display: none;" >
+                        {% for data in SettingRingMaster_value%}
+                        <tr data-id="{{ data.id }}">
+                            <td>{{ forloop.counter }}</td>
+                            <td><input type="text" value="{{ data.parameter_name }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td><input type="text" value="{{ data.ref_size }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td><input type="text" value="{{ data.nominal }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+            </table> 
+        </div> 
+
+
+        <div class="container-7" id="container-7-6">
+            <header style="text-align: center;font-weight: bold; margin-top: 10px;">CALIBRATION RESULT-6</header>
+            <div class="subheader" style="font-size: 12px; font-weight: 500;margin-top: 0px;">(All Values are in mm)</div>
+
+            <table border="1" cellpadding="4" cellspacing="0" style="margin-top: 0px; width: 200mm;text-align: center;">
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">Sr.No</th>
+                        <th style="width:30%;">Parameter</th>
+                        <th style="width: 15%;">Ref Size</th>
+                        <th style="width:15%;">SET</th>
+                        <th style="width: 20%;">Observation Size</th>
+                        <th style="width:15%;">Error</th> 
+                    </tr>
+                </thead>
+                    <tbody id="tableBody-3-6" style="display: none;">
+                        {% for data in SettingPlugMaster_value%}
+                        <tr data-id="{{ data.id }}">
+                            <td>{{ forloop.counter }}</td>
+                            <td><input type="text" value="{{ data.parameter_name }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td><input type="text" value="{{ data.ref_size }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td><input type="text" value="{{ data.nominal }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                    <tbody id="tableBody-4-6" style="display: none;" >
+                        {% for data in SettingRingMaster_value%}
+                        <tr data-id="{{ data.id }}">
+                            <td>{{ forloop.counter }}</td>
+                            <td><input type="text" value="{{ data.parameter_name }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td><input type="text" value="{{ data.ref_size }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td><input type="text" value="{{ data.nominal }}"style="width: 100%; box-sizing: border-box;margin-left: 0px;text-align: center;"></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+            </table> 
+        </div> 
+
+        <div class="line" id="line6"></div> 
+        <div class="container-8-1">
+            <header style="text-align: center;font-size: small;">..... END OF CERTIFICATE .....</header>
+            <div class="container8_sub1">
+                <input type="text" class="calibration_engineer_op" style="width: 150px; margin-left: 25px;">
+                <p style="text-align: center; margin-top: 5px;">Calibration Engineer</p>
+            </div>
+            <div class="container8_sub2">
+                <input type="text" class="quality_manager_op" style="width: 150px; margin-left: 25px;">
+                <p style="text-align: center; margin-top: 5px;">Quality Manager</p>
+            </div>
+        </div>
+        <footer style="border-top: 5px solid #339b8a; height: 50px; width: 199mm;">
+            <div class="scale-footer" style="margin-top: -25px;"></div>
+            <!-- The footer content will be generated dynamically -->
+        </footer>
+    </div>
+
+    
+</div>
+
+
+
+    
+
+<script>
+
+function downloadPDF() {
+    const element = document.getElementById('a4-content');
+    
+    // Get the certificate number from the input field
+    const certificateNo = document.getElementById('certificate_no_op').value || 'default-filename'; // Fallback in case it's empty
+
+    var opt = {
+        margin:       0,
+        filename:     `${certificateNo}.pdf`,  // Set the filename dynamically
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'mm', orientation: 'portrait' }
+    };
+    
+    // Convert the content to PDF
+    html2pdf().from(element).set(opt).save();
+}
+
+
+
+    
+   // Select all elements with the class "scale-footer"
+const footers = document.getElementsByClassName('scale-footer');
+
+// Loop through each footer element
+for (const footer of footers) {
+    // Calculate the width of the footer
+    const footerWidth = footer.offsetWidth;
+
+    // Set the width of each line and spacing between lines (adjust as needed)
+    const lineWidth = 2; // Width of each scale line
+    const lineMargin = 5; // Spacing between lines
+
+    // Total space occupied by each line including margin
+    const lineSpace = lineWidth + lineMargin;
+
+    // Calculate how many lines fit in the footer based on its width
+    const totalLines = Math.floor(footerWidth / lineSpace);
+
+    // Create scale lines dynamically to cover the width of the footer
+    for (let i = 1; i <= totalLines; i++) {
+        const line = document.createElement('span'); // Create a span element for each line
+
+        // Apply alternating height styles for a ruler-like effect
+        if (i % 5 === 0) {
+            line.style.height = '20px';  // Tall line for every 5th line
+        } else {
+            line.style.height = '10px';  // Shorter line for others
+        }
+
+        // Common styles for all lines
+        line.style.width = `${lineWidth}px`;  // Set width of each line
+        line.style.backgroundColor = '#339b8a';  // Line color
+        line.style.display = 'inline-block';  // Ensure the lines are inline
+        line.style.marginRight = `${lineMargin}px`;  // Spacing between the lines
+        line.style.verticalAlign = 'bottom';  // Align at the bottom of the footer
+
+        // Append each line to the current footer
+        footer.appendChild(line);
+    }
+}
+
+
+
+    
+    
+
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+    // Ensure 'storedFormData' exists and is loaded properly
+    if (storedFormData) {
+        // Existing population logic for other fields (already in your code)
+        document.getElementById("certificate_no_op").value = storedFormData.certificate_num || '';
+        document.getElementById("date_of_issue_op").value = storedFormData.date_of_issue || '';
+        document.getElementById("date_of_calib_op").value = storedFormData.date || '';
+        document.getElementById("next_calibration_op").value = storedFormData.next_calibration || '';
+        document.getElementById("container3_textarea").value = storedFormData.customer_address || '';
+
+
+         // Populating the fields for Description of Instruments section
+         document.getElementById("range_op").value = storedFormData.range || '';
+        document.getElementById("lc_op").value = storedFormData.least_count || '';
+        document.getElementById("identification_no_op").value = storedFormData.identification_no || '';
+        document.getElementById("si_no_op").value = storedFormData.si_no || '';
+        document.getElementById("make_op").value = storedFormData.make || '';
+
+        document.getElementById("customer_ref_op").value = storedFormData.customer_ref || '';
+        document.getElementById("date_op").value = storedFormData.date_calib || '';
+        document.getElementById("date_of_receipt_op").value = storedFormData.date_of_receipt || '';
+        document.getElementById("calib_no_op").value = storedFormData.calib_procedure_no || '';
+        document.getElementById("location_op").value = storedFormData.location || '';
+        document.getElementById("inward_no_op").value = storedFormData.inward_no || '';
+        document.getElementById("environment_op").value = storedFormData.environment || '';
+        document.getElementById("uncertainity_op").value = storedFormData.uncertainity || '';
+        document.getElementById("inward_no_op").value = storedFormData.inward_no || '';
+        
+
+        document.querySelectorAll(".calibration_engineer_op").forEach((element) => {
+            element.value = storedFormData.calib_engineer || '';
+        });
+
+        document.querySelectorAll(".quality_manager_op").forEach((element) => {
+            element.value = storedFormData.quality_manager || '';
+        });
+
+    } else {
+        console.error("storedFormData is not defined or is empty.");
+    }
+});
+
+
+
+
+
+
+
+
+
+    // Retrieve the stored data
+var storedFormData = JSON.parse(localStorage.getItem('formData'));
+
+if (storedFormData) {
+    console.log("Form Data Retrieved: ", storedFormData);
+
+    console.log("Date: ", storedFormData.date);
+    console.log("next_calibration: ", storedFormData.next_calibration);
+    console.log("date_of_issue: ", storedFormData.date_of_issue);
+    console.log("Certificate Number: ", storedFormData.certificate_num);
+    console.log("Calibration Engineer: ", storedFormData.calib_engineer);
+    console.log("Quality Manager: ", storedFormData.quality_manager);
+    console.log("Customer Address: ", storedFormData.customer_address);
+    
+    console.log("Range: ", storedFormData.range);
+    console.log("Least Count: ", storedFormData.least_count);
+    console.log("Identification Number: ", storedFormData.identification_no);
+    console.log("Serial Number (SI No): ", storedFormData.si_no);
+    console.log("Make: ", storedFormData.make);
+    console.log("Customer Reference: ", storedFormData.customer_ref);
+    console.log("Date of Calibration: ", storedFormData.date_calib);
+    console.log("Date of Receipt: ", storedFormData.date_of_receipt);
+    console.log("Calibration Procedure Number: ", storedFormData.calib_procedure_no);
+    console.log("Location: ", storedFormData.location);
+    console.log("Environment: ", storedFormData.environment);
+    console.log("Uncertainty: ", storedFormData.uncertainity);
+    console.log("inward_no: ", storedFormData.inward_no);
+    
+    console.log("Group 1 Selection (ID): ", storedFormData.group1Selection);
+    console.log("Group 2 Selection (ID): ", storedFormData.group2Selection);
+
+    // Log the dynamic input values
+    console.log("Input Values: ");
+    Object.entries(storedFormData.inputValues).forEach(([key, value]) => {
+        console.log(`${key}: ${value}`);
+    });
+
+    // Log the dynamic output values
+    console.log("Output Values: ");
+    Object.entries(storedFormData.outputValues).forEach(([key, value]) => {
+        console.log(`${key}: ${value}`);
+    });
+
+var group1SelectionId = storedFormData.group1Selection; // Replace with actual key
+
+// Determine which tbody to display
+if (group1SelectionId === "setting_ring_trace") {
+    document.getElementById("tableBody-2").style.display = ""; // Show tableBody-2
+    document.getElementById("tableBody-1").style.display = "none"; // Hide tableBody-1
+} else if (group1SelectionId === "setting_plug_trace") {
+    document.getElementById("tableBody-1").style.display = ""; // Show tableBody-1
+    document.getElementById("tableBody-2").style.display = "none"; // Hide tableBody-2
+} else {
+    // Optionally handle cases where the selection ID is unrecognized
+    console.warn("Unrecognized selection ID:", group1SelectionId);
+}
+
+
+var group2SelectionId = storedFormData.group2Selection;
+
+    // Function to reorder inputs and outputs
+    function reorderValues(storedValues) {
+        const orderedInputs = [];
+        const orderedOutputs = [];
+        
+        // Collect input values
+        Object.keys(storedValues.inputValues).forEach(key => {
+            if (key.startsWith('input-')) {
+                orderedInputs.push(storedValues.inputValues[key]);
+            }
+        });
+
+        // Collect output values
+        Object.keys(storedValues.outputValues).forEach(key => {
+            if (key.startsWith('output-')) {
+                orderedOutputs.push(storedValues.outputValues[key]);
+            }
+        });
+        console.log("orderedInputs",orderedInputs)
+        console.log("orderedOutputs",orderedOutputs)
+
+        return { orderedInputs, orderedOutputs };
+    }
+
+    const { orderedInputs, orderedOutputs } = reorderValues(storedFormData);
+
+    // Determine which tbody to display
+    if (group2SelectionId === "setting_ring_master") {
+        document.getElementById("tableBody-4-1").style.display = ""; // Show tableBody-4
+        document.getElementById("tableBody-3-1").style.display = "none"; // Hide tableBody-3
+        
+        // Populate the input and output values for setting_ring_master
+        const rows = document.querySelectorAll("#tableBody-4-1 tr");
+        rows.forEach((row, index) => {
+            // Set input value
+            const inputValue = orderedInputs[index] || '';
+            row.cells[4].innerHTML = `<input type="text" value="${inputValue}" style="width: 100%; box-sizing: border-box; margin-left: 0px; text-align: center;">`;
+
+            // Set output value
+            const outputValue = orderedOutputs[index] || '';
+            row.cells[5].innerHTML = `<input type="text" value="${outputValue}" style="width: 100%; box-sizing: border-box; margin-left: 0px; text-align: center;">`;
+        });
+
+    } else if (group2SelectionId === "setting_plug_master") {
+        document.getElementById("tableBody-3-1").style.display = ""; // Show tableBody-3
+        document.getElementById("tableBody-4-1").style.display = "none"; // Hide tableBody-4
+        
+        // Populate the input and output values for setting_plug_master
+        const rows = document.querySelectorAll("#tableBody-3-1 tr");
+        rows.forEach((row, index) => {
+            // Set input value
+            const inputValue = orderedInputs[index] || '';
+            row.cells[4].innerHTML = `<input type="text" value="${inputValue}" style="width: 100%; box-sizing: border-box; margin-left: 0px; text-align: center;">`;
+
+            // Set output value
+            const outputValue = orderedOutputs[index] || '';
+            row.cells[5].innerHTML = `<input type="text" value="${outputValue}" style="width: 100%; box-sizing: border-box; margin-left: 0px; text-align: center;">`;
+        });
+        
+    } else {
+        // Optionally handle cases where the selection ID is unrecognized
+        console.warn("Unrecognized selection ID:", group2SelectionId);
+    }
+}
+
+
+</script>
+</body>
+</html>

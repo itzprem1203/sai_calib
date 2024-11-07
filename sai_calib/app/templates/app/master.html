@@ -1,0 +1,1073 @@
+{% extends 'app/layouts/main.html' %}
+{% block title %}
+Master Data
+{% endblock title %}
+{% block content %}
+<style>
+    #box0{
+        height: 630px;
+        width: 1050px;
+        margin-left: 50px;
+        border: 2px solid black;
+        background-color:#fae5d5;
+        border-radius: 20px;
+    }
+    #box1{
+        height: 80px;
+        width: 900px;
+        margin-top: 10px;
+        margin-left: 50px;
+        border: 2px solid black;
+        background-color:#c9f6e0;
+        border-radius: 5px;
+    }
+    #box2{
+        height: 500px;
+        width: 900px;
+        margin-top: 10px;
+        margin-left: 50px;
+        border: 2px solid black;
+        background-color: #e6d2fc;
+    }
+    .box-1 {
+        display: flex;
+        gap: 10px; /* Space between labels */
+    }
+
+    body{
+        background-color: #1a7d9e;
+    }
+
+    .inner-box-1, .inner-box-2, .inner-box-3, .inner-box-4{
+        padding: 10px;
+        background-color: #f0f0f0;
+        border: 2px solid #ccc;
+        text-align: center;
+        cursor: pointer;
+        font-weight: bold;
+        margin-top: 10px;
+        margin-left: 30px;
+        height: 50px;
+        width:180px;
+  }
+    .item-1, .item-2, .item-3, .item-4{
+    border: 1px solid #ccc;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s; 
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+label {
+    display: inline-block;
+    width: 150px;
+    margin-top: 15px;
+    text-align: center;
+    margin-left: 20px;
+    font-weight: bold;
+    
+}
+select {
+    margin-top: 10px;
+    box-sizing: border-box;
+    width: 20%;
+    height: 20px;
+}
+
+
+   
+
+    .container {
+            display: flex;
+            align-items: center; /* Center elements vertically */
+            justify-content: center; /* Center elements horizontally */
+            margin-top: 20px; /* Adjust as needed */
+            background-color: #E6E6FA;
+            padding: 20px; /* Add padding if needed */
+        }
+
+        .label-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center label vertically within the container */
+            margin-right: 20px; /* Adjust space between label and textarea */
+        }
+
+        .ruled-textarea {
+            width: 450px;
+            height: 120px;
+            line-height: 30px; /* Adjust to match the height of each line */
+            background: repeating-linear-gradient(
+                white, 
+                white 29px, /* Adjust to match the height of each line minus the border width */
+                black 30px /* Adjust to match the line-height */
+            );
+            border: 1px solid #ccc;
+            padding: 5px;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            resize: none; /* Prevent resizing to maintain the line structure */
+            margin-left: 20px; /* Space between textarea and label */
+        }
+
+        .ruled-textarea:focus {
+            border-color: #904caf; /* Add focus style */
+            box-shadow: 0 0 5px #904caf;
+            outline: none;
+        }
+        
+  /* Basic styling for the custom dropdown container */
+  .dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+       /* Styling for the custom dropdown button */
+    .dropdown-button {
+        padding: 7px;
+        border: 1px solid #d1d1d1; /* Light gray border */
+        background-color: #f0f0f0; /* Mild gray background */
+        cursor: pointer;
+        width: 230px;
+    border: 1px solid black;
+}
+
+   .dropdown-button.green {
+            background-color: rgb(57, 248, 57);
+        }
+        .dropdown-button.red {
+            background-color: rgb(248, 68, 68);
+        }
+
+/* Styling for the dropdown content */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #e3f2fd; /* Very light mild blue background */
+    border: 1px solid #10232b; /* Mild blue border */
+    z-index: 1;
+    width: 230px;
+    box-sizing: border-box;
+    color: black; /* Softer dark blue text color */
+}
+
+/* Styling for the input boxes inside the dropdown */
+.dropdown-content input {
+    width: calc(100% - 20px);
+    margin: 10px;
+    padding: 5px;
+    box-sizing: border-box;
+    background-color: #e1f5fe; /* Very light mild blue background for inputs */
+    border: 1px solid #81d4fa; /* Mild blue border for inputs */
+    color: #0277bd; /* Softer blue text color for inputs */
+}
+#cancel-btn{
+             background-color: red;
+             color:black;
+             height: 50px;
+             width: 150px;
+             margin-left: 10px;
+             margin-top: 30px;
+               
+         }
+#cancel-btn-2,#cancel-btn-3,#cancel-btn-4{
+    background-color: orange;
+    color:black;
+    height: 50px;
+    width: 150px;
+    margin-left: 10px;
+    margin-top: 30px;
+
+}
+
+#clear-btn{
+background-color: orange;
+    color:black;
+    height: 50px;
+    width: 150px;
+    margin-left: 65px;
+    margin-top: 30px;
+}
+#delete-btn{
+            background-color: red;
+             color:black;
+             height: 50px;
+             width: 150px;
+             margin-left: 65px;
+             margin-top: 30px;
+         }
+  #save-btn{
+      background-color: green;
+      color:black;           
+      height: 50px;
+      width: 150px; 
+      margin-left: 65px; 
+      margin-top: 30px;
+  }
+
+  /* Style for the input field */
+#search-input {
+        width: 600px;
+        padding: 8px;
+        font-size: 16px;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        outline: none;
+        margin-left: -20px;
+ }
+
+/* Add custom outline when input is focused */
+#search-input:focus {
+    border-color: #904caf;
+    box-shadow: 0 0 8px #904caf;
+}
+
+
+#notification {
+    display: none;
+    position: fixed;    
+    top: 50%;
+    left: 60%;
+    height: 120px;
+    width: 350px;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: black;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    z-index: 1000; 
+    border: 2px solid black;
+}
+
+.selected {
+        background-color:orange;
+    }
+    .no-outline{
+        border: none;
+        outline: none;
+    }   
+
+    
+</style>
+
+
+<div class="box-0" id="box0">
+    <div class="box-1" id="box1">
+        <label class="inner-box-1" id="customer_details"  onclick="enlargeItem(1),showItem('item-1')" >CUSTOMER DETAILS</label>
+        <label class="inner-box-2" id="traceability" onclick="enlargeItem(2),showItem('item-2')" >TRACEABILITY</label>
+        <label class="inner-box-3" id="master" onclick="enlargeItem(3),showItem('item-3')" >MASTER DETAILS</label>
+        <label class="inner-box-4" id="engineer_details" onclick="enlargeItem(4),showItem('item-4')">ENGINEER DETAILS</label>
+    </div>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+    <div class="box-2" id="box2" style="overflow-x: auto;overflow-y:auto;">
+
+        <div id="notification" style="display: none;"></div>
+        <div class="item item-1" id="item1">
+        
+            <form id="customer-form" onsubmit="return validateForm()">
+                <label for="search" style="margin-left: -20px; width: 200px;margin-top: -10px;">SEARCH CUSTOMER:</label>
+                <input list="customers" id="search-input" style="width: 600px;">
+                <datalist id="customers">
+                    {% for customer in customer_value %}
+                    <option value="{{ customer.customer_name }}"
+                            data-primary-contact="{{ customer.primary_contact_person }}"
+                            data-secondary-contact="{{ customer.secondary_contact_person }}"
+                            data-primary-email="{{ customer.primary_email }}"
+                            data-secondary-email="{{ customer.secondary_email }}"
+                            data-primary-phone="{{ customer.primary_phone_no }}"
+                            data-secondary-phone="{{ customer.secondary_phone_no }}"
+                            data-gst="{{ customer.gst_no }}"
+                            data-primary_department="{{ customer.primary_dept }}"
+                            data-secondary_department="{{ customer.secondary_dept }}"
+                            data-address="{{ customer.address }}">
+                    {% endfor %}
+                </datalist><br><br>
+                
+
+                <label for="customer_name" style="margin-left: 0px; margin-top: -10px;">CUSTOMER NAME:</label>
+                <input type="text" id="customer_name" name="customer_name" value="" required>
+                <label for="gst_no" style="margin-left: -10px;">GST No:</label>
+                <input type="text" id="gst_no" name="gst_no" required ><br>
+
+                <table id="prim_sec_table" style="margin-top: 10px;">
+                    <tr>
+                        <th></th>
+                        <th style="width: 20%;">Contact Person</th>
+                        <th style="width: 20%;">Ph.No</th>
+                        <th style="width: 20%;">Email</th>
+                        <th style="width: 20%;">Department</th>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">PRIMARY</td>
+                        <td><input type="text" class="no-outline" style="width: 100%;" id="primary_contact_person"></td>
+                        <td><input type="text" class="no-outline" style="width: 100%;" id="primary_phone_no" ></td>
+                        <td><input type="text" class="no-outline" style="width: 100%;" id="primary_email"></td>
+                        <td><input type="text" class="no-outline" style="width: 100%;" id="primary_dept"></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">SECONDARY</td>
+                        <td><input type="text" class="no-outline" style="width: 100%;" id="secondary_contact_person"></td>
+                        <td><input type="text" class="no-outline" style="width: 100%;" id="secondary_phone_no"></td>
+                        <td><input type="text" class="no-outline" style="width: 100%;" id="secondary_email"></td>
+                        <td><input type="text" class="no-outline" style="width: 100%;" id="secondary_dept"></td>
+                    </tr>
+                </table>
+        
+                
+        
+                <div class="container">
+                    <div class="label-container">
+                        <label for="address" style="text-align: right;">ADDRESS:</label>
+                    </div>
+                    <textarea id="address" name="address" class="ruled-textarea" required></textarea>
+                </div>
+            <a href="/index/">
+                <button type="button" id="cancel-btn"><b>Cancel</b></button>
+            </a>
+            <button type="button" id="clear-btn" onclick="clearValues()"><b>Clear values</b></button>
+            <button type="submit" id="save-btn" onclick="saveData('customer')"><b>Save</b></button>
+        </form>
+        </div>
+
+
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+<div class="item item-2" id="item2">
+    <div style="display: flex; margin-top: -10px; margin-left: -20px; gap: 15px;">
+        <label style="width: 250px;">
+            <input type="radio" name="group" value="1" id="setting_plug_trace_radio" onclick="toggleTables()" checked> Setting Plug Trace
+        </label>
+        <label style="width: 250px;">
+            <input type="radio" name="group" value="2" id="setting_ring_trace_radio" onclick="toggleTables()"> Setting Ring Trace
+        </label>
+    </div>
+
+    <div id="setting_plug_trace" style="display: none;">
+        <table border="1" style="margin-top: 10px;">
+            <thead>
+                <tr>
+                    <th>Sr.No</th>
+                    <th style="width: 25%;">Master Name</th>
+                    <th style="width: 10%;">Id.No</th>
+                    <th style="width: 22%;">Calibration No</th>
+                    <th style="width: 15%;">Valid Upto</th>
+                    <th style="width: 28%;">Traceability</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody-1">
+                {% for data in SettingPlugTrace_value%}
+                <tr data-id="{{ data.id }}">
+                    <td>{{ forloop.counter }}</td>
+                    <td><input type="text" value="{{ data.master_name }}" class="no-outline" style="width: 100%;"></td>
+                    <td><input type="text" value="{{ data.id_no }}" class="no-outline" style="width: 100%;"></td>
+                    <td><input type="text" value="{{ data.calibration_report_no }}" class="no-outline" style="width: 100%;"></td>
+                    <td><input type="text" value="{{ data.valid_upto }}" class="no-outline" style="width: 100%;"></td>
+                    <td><input type="text" value="{{ data.traceability }}" class="no-outline" style="width: 100%;"></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        <button onclick="addRow('setting_plug_trace', 6)">Add New</button>
+        <div>
+            <a href="/index/">
+                <button type="button" id="cancel-btn-2"><b>Cancel</b></button>
+            </a>
+            <button type="button" id="delete-btn" onclick="deleteSelectedRows('tableBody-1')"><b>Delete</b></button>
+            <button type="submit" id="save-btn" onclick="saveData('setting_plug_trace')"><b>Save</b></button>
+        </div>
+    </div>
+
+    <div id="setting_ring_trace" style="display: none;">
+        <table border="1" style="margin-top: 10px;">
+            <thead>
+                <tr>
+                    <th>Sr.No</th>
+                    <th style="width: 25%;">Master Name</th>
+                    <th style="width: 10%;">Id.No</th>
+                    <th style="width: 22%;">Calibration No</th>
+                    <th style="width: 15%;">Valid Upto</th>
+                    <th style="width: 28%;">Traceability</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody-2">
+                {% for data in SettingRingTrace_value%}
+                <tr data-id="{{ data.id }}">
+                    <td>{{ forloop.counter }}</td>
+                    <td><input type="text" value="{{ data.master_name }}" class="no-outline" style="width: 100%;"></td>
+                    <td><input type="text" value="{{ data.id_no }}" class="no-outline" style="width: 100%;"></td>
+                    <td><input type="text" value="{{ data.calibration_report_no }}" class="no-outline" style="width: 100%;"></td>
+                    <td><input type="text" value="{{ data.valid_upto }}" class="no-outline" style="width: 100%;"></td>
+                    <td><input type="text" value="{{ data.traceability }}" class="no-outline" style="width: 100%;"></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        <button onclick="addRow('setting_ring_trace', 6)">Add New</button>
+        <div>
+            <a href="/index/">
+                <button type="button" id="cancel-btn-2"><b>Cancel</b></button>
+            </a>
+            <button type="button" id="delete-btn" onclick="deleteSelectedRows('tableBody-2')"><b>Delete</b></button>
+            <button type="submit" id="save-btn" onclick="saveData('setting_ring_trace')"><b>Save</b></button>
+        </div>
+    </div>
+</div>
+
+
+<!-- //////////////////////////////////////////////////////////////////////////////////// -->
+
+        <div class="item item-3" id="item3">
+            <div style="display: flex; margin-top: -10px; margin-left: -20px; gap: 15px;">
+                <label style="width: 250px;">
+                    <input type="radio" name="group" value="1" id="setting_plug_master_radio" onclick="toggleTables2()" > Setting Plug Master
+                  </label>
+                  <label style="width: 250px;">
+                    <input type="radio" name="group" value="2" id="setting_ring_master_radio" onclick="toggleTables2()"> Setting Ring Master 
+                  </label>
+                </div>
+            <div id="setting_plug_master" style="display: none;">
+            <table border="1" style="margin-top: 10px;">
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">Sr.No</th>
+                        <th style="width: 20%;" id="parameter_name">Parameter Name</th>
+                        <th style="width: 20%;" id="ref_size">Ref Size on Setting Ring Gauge</th>
+                        <th style="width: 20%;" id="nominal">Nominal</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody-3">
+                    {% for data in SettingPlugMaster_value%}
+                    <tr data-id="{{ data.id }}">
+                        <td>{{ forloop.counter }}</td>
+                        <td><input type="text" value="{{ data.parameter_name }}" class="no-outline" style="width: 100%;"></td>
+                        <td><input type="text" value="{{ data.ref_size }}" class="no-outline" style="width: 100%;"></td>
+                        <td><input type="text" value="{{ data.nominal }}" class="no-outline" style="width: 100%;"></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table><br>
+            <button onclick="addRow('setting_plug_master', 4)">Add New</button>
+            <div>
+                <a href="/index/">
+                    <button type="button" id="cancel-btn-3"><b>Cancel</b></button>
+                </a>
+                <button type="button" id="delete-btn" onclick="deleteSelectedRows('tableBody-3')"><b>Delete</b></button>
+                <button type="submit" id="save-btn" onclick="saveData('setting_plug_master')"><b>Save</b></button>
+            </div>
+            </div>
+
+
+            <div id="setting_ring_master" style="display: none;">
+                <table border="1" style="margin-top: 10px;">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;">Sr.No</th>
+                            <th style="width: 20%;" id="parameter_name">Parameter Name</th>
+                            <th style="width: 20%;" id="ref_size">Ref Size on Setting Ring Gauge</th>
+                            <th style="width: 20%;" id="nominal">Nominal</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody-4">
+                        {% for data in SettingRingMaster_value%}
+                        <tr data-id="{{ data.id }}">
+                            <td>{{ forloop.counter }}</td>
+                            <td><input type="text" value="{{ data.parameter_name }}" class="no-outline" style="width: 100%;"></td>
+                            <td><input type="text" value="{{ data.ref_size }}" class="no-outline" style="width: 100%;"></td>
+                            <td><input type="text" value="{{ data.nominal }}" class="no-outline" style="width: 100%;"></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table><br>
+                <button onclick="addRow('setting_ring_master', 4)">Add New</button>
+                <div>
+                    <a href="/index/">
+                        <button type="button" id="cancel-btn-3"><b>Cancel</b></button>
+                    </a>
+                    <button type="button" id="delete-btn" onclick="deleteSelectedRows('tableBody-4')"><b>Delete</b></button>
+                    <button type="submit" id="save-btn" onclick="saveData('setting_ring_master')"><b>Save</b></button>
+                </div>
+                </div>
+        </div>
+
+<!-- /////////////////////////////////////////////////////////////////////////////////////////// -->
+
+        <div class="item item-4" id="item4">
+            <div id="engineer_manager_details" >
+            <table border="1" style="margin-top: 10px;">
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">Sr.No</th>
+                        <th style="width: 20%;" id="calib_engineer">Calibration Engineer</th>
+                        <th style="width: 20%;" id="quality_manager">Quality Manager</th>
+                        <th style="width: 20%;" id="certificate_no">Certificate No Series</th>
+                        
+                    </tr>
+                </thead>
+                <tbody id="tableBody-5">
+                    {% for data in EngineerManagerDetails_value%}
+                    <tr data-id="{{ data.id }}">
+                        <td>{{ forloop.counter }}</td>
+                        <td><input type="text" value="{{ data.calib_engineer }}" class="no-outline" style="width: 100%;"></td>
+                        <td><input type="text" value="{{ data.quality_manager }}" class="no-outline" style="width: 100%;"></td>
+                        <td><input type="text" value="{{ data.certificate_no }}" class="no-outline" style="width: 100%;"></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table><br>
+            <button onclick="addRow('engineer_manager_details', 4)">Add New</button>
+            <div>
+                <a href="/index/">
+                    <button type="button" id="cancel-btn-4"><b>Cancel</b></button>
+                </a>
+                <button type="button" id="delete-btn" onclick="deleteSelectedRows('tableBody-5')"><b>Delete</b></button>
+                <button type="submit" id="save-btn" onclick="saveData('engineer_manager_details')"><b>Save</b></button>
+            </div>
+            </div>
+       
+        </div>
+    </div>     
+</div>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////// -->
+
+<script>
+
+document.getElementById('search-input').addEventListener('input', function() {
+    const inputValue = this.value;
+    const options = document.getElementById('customers').options;
+    
+    for (let i = 0; i < options.length; i++) {
+        if (options[i].value === inputValue) {
+            // Populate fields with the corresponding data attributes
+            document.getElementById('customer_name').value = options[i].getAttribute('value') || '';
+            document.getElementById('primary_contact_person').value = options[i].getAttribute('data-primary-contact') || '';
+            document.getElementById('secondary_contact_person').value = options[i].getAttribute('data-secondary-contact') || '';
+            document.getElementById('primary_email').value = options[i].getAttribute('data-primary-email') || '';
+            document.getElementById('secondary_email').value = options[i].getAttribute('data-secondary-email') || '';
+            document.getElementById('primary_phone_no').value = options[i].getAttribute('data-primary-phone') || '';
+            document.getElementById('secondary_phone_no').value = options[i].getAttribute('data-secondary-phone') || '';
+            document.getElementById('gst_no').value = options[i].getAttribute('data-gst') || '';
+            document.getElementById('primary_dept').value = options[i].getAttribute('data-primary_department') || '';
+            document.getElementById('secondary_dept').value = options[i].getAttribute('data-secondary_department') || '';
+            document.getElementById('address').value = options[i].getAttribute('data-address') || '';
+            break;
+        }
+    }
+});
+
+function clearValues() {
+    document.getElementById('customer_name').value = '';
+    document.getElementById('search-input').value = '';
+    document.getElementById('primary_contact_person').value = '';
+    document.getElementById('secondary_contact_person').value = '';
+    document.getElementById('primary_email').value = '';
+    document.getElementById('secondary_email').value = '';
+    document.getElementById('primary_phone_no').value = '';
+    document.getElementById('secondary_phone_no').value = '';
+    document.getElementById('gst_no').value = '';
+    document.getElementById('primary_dept').value = '';
+    document.getElementById('secondary_dept').value = '';
+    document.getElementById('address').value = '';
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+function toggleTables() {
+        // Get the radio button elements
+        var plugTrace = document.getElementById('setting_plug_trace_radio');
+        var ringTrace = document.getElementById('setting_ring_trace_radio');
+        
+        // Get the table div elements
+        var plugTable = document.getElementById('setting_plug_trace');
+        var ringTable = document.getElementById('setting_ring_trace');
+        
+        // Display the corresponding table based on the selected radio button
+        if (plugTrace.checked) {
+            plugTable.style.display = 'block';
+            ringTable.style.display = 'none';
+        } else if (ringTrace.checked) {
+            plugTable.style.display = 'none';
+            ringTable.style.display = 'block';
+        }
+    }
+
+    function toggleTables() {
+        const plugTraceDiv = document.getElementById('setting_plug_trace');
+        const ringTraceDiv = document.getElementById('setting_ring_trace');
+        
+        if (document.getElementById('setting_plug_trace_radio').checked) {
+            plugTraceDiv.style.display = 'block';
+            ringTraceDiv.style.display = 'none';
+        } else if (document.getElementById('setting_ring_trace_radio').checked) {
+            plugTraceDiv.style.display = 'none';
+            ringTraceDiv.style.display = 'block';
+        }
+    }
+    
+    // Call toggleTables initially to set the correct display
+    toggleTables();
+
+
+    function toggleTables2() {
+        // Get the radio button elements
+        var plugMaster = document.getElementById('setting_plug_master_radio');
+        var ringMaster = document.getElementById('setting_ring_master_radio');
+        
+        // Get the table div elements
+        var plugMasterTable = document.getElementById('setting_plug_master');
+        var ringMasterTable = document.getElementById('setting_ring_master');
+        
+        // Display the corresponding table based on the selected radio button
+        if (plugMaster.checked) {
+            plugMasterTable.style.display = 'block';
+            ringMasterTable.style.display = 'none';
+        } else if (ringMaster.checked) {
+            plugMasterTable.style.display = 'none';
+            ringMasterTable.style.display = 'block';
+        }
+    }
+    function toggleTables2() {
+        const plugMasterDiv = document.getElementById('setting_plug_master');
+        const ringMasterDiv = document.getElementById('setting_ring_master');
+        
+        if (document.getElementById('setting_plug_master_radio').checked) {
+            plugMasterDiv.style.display = 'block';
+            ringMasterDiv.style.display = 'none';
+        } else {
+            plugMasterDiv.style.display = 'none';
+            ringMasterDiv.style.display = 'block';
+        }
+    }   toggleTables2();
+////////////////////////////////////////////////////////////////////////////////////////////
+
+   // Function to highlight and enlarge an item
+function enlargeItem(index) {
+    // Remove the highlight from all items
+    document.querySelectorAll('.box-1 > label').forEach(function (el) {
+        el.style.backgroundColor = '';  // Reset background color for all labels
+    });
+
+    // Highlight the clicked item
+    var clickedInnerBox = document.querySelector(`.box-1 .inner-box-${index}`);
+    if (clickedInnerBox) {
+        clickedInnerBox.style.backgroundColor = 'red';  // Highlight the clicked label
+    } else {
+        console.log('No inner-box found with index:', index);
+    }
+}
+
+// Function to display the selected item
+function showItem(itemClassName) {
+    // Hide all items
+    var itemClasses = document.querySelectorAll('.item');
+    itemClasses.forEach(function (item) {
+        item.style.display = 'none';  // Hide all items
+    });
+
+    // Show the selected item
+    var selectedItem = document.querySelector('.' + itemClassName);
+    if (selectedItem) {
+        selectedItem.style.display = 'block';  // Show the selected item
+    } else {
+        console.log('No item found with class:', itemClassName);
+    }
+}
+
+var rowData = {};
+
+function addRow(tableId, numColumns) {
+    var tableBody = document.querySelector('#' + tableId + ' tbody');
+    var newRow = tableBody.insertRow(tableBody.rows.length);
+
+    // Mark the row as new
+    newRow.setAttribute('data-new', 'true');
+
+    // Add click event to highlight the row on click
+    newRow.addEventListener('click', function(event) {
+        var rows = tableBody.querySelectorAll('tr');
+        rows.forEach(function(row) {
+            row.style.backgroundColor = '';  // Reset background color for all rows
+        });
+        event.currentTarget.style.backgroundColor = 'red';  // Set background color for the clicked row
+    });
+
+    for (var i = 0; i < numColumns; i++) {
+        var cell = newRow.insertCell(i);
+        var input = document.createElement('input');
+        input.type = 'text';
+        input.style.width = '100%';
+        input.style.padding = '0';
+        input.style.border = 'none';
+        input.style.outline = 'none';
+        cell.appendChild(input);
+    }
+
+    // Initialize the rowData for the new row
+    if (!rowData[tableId]) {
+        rowData[tableId] = [];
+    }
+    rowData[tableId].push({
+        rowIndex: newRow.rowIndex,
+        values: Array.from(newRow.cells).map(cell => cell.querySelector('input').value)
+    });
+}
+
+
+
+
+window.onload = function () {
+    showItem('item-1');
+    document.querySelector('.box-1 .inner-box-1').style.backgroundColor = 'red';
+};
+
+
+///////////////////////////////////////////////////////////////////////////////
+// customer details script
+
+function toggleDropdown(id) {
+            var dropdownContent = document.getElementById('dropdown-content-' + id);
+            var dropdownButton = document.getElementById(id + '_btn');
+            if (dropdownContent.style.display === "none" || dropdownContent.style.display === "") {
+                dropdownContent.style.display = "block";
+            } else {
+                dropdownContent.style.display = "none";
+            }
+            // Update the button style based on the content
+            updateButtonStyle(id);
+        }
+
+        function updateButtonStyle(id) {
+            var dropdownButton = document.getElementById(id + '_btn');
+            var dropdownContent = document.getElementById('dropdown-content-' + id);
+            var inputs = dropdownContent.querySelectorAll('input');
+            var hasValue = Array.from(inputs).some(input => input.value.trim() !== '');
+
+            if (hasValue) {
+                dropdownButton.classList.add('green');
+                dropdownButton.classList.remove('red');
+            } else {
+                dropdownButton.classList.add('red');
+                dropdownButton.classList.remove('green');
+            }
+        }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+function saveData(formType) {
+    let formData = {};
+
+    if (formType === 'customer') {
+        // Collect customer form data
+        formData.customer_name = document.getElementById('customer_name').value;
+        formData.primary_contact_person = document.getElementById('primary_contact_person').value;
+        formData.secondary_contact_person = document.getElementById('secondary_contact_person').value;
+        formData.primary_email = document.getElementById('primary_email').value;
+        formData.secondary_email = document.getElementById('secondary_email').value;
+        formData.primary_phone_no = document.getElementById('primary_phone_no').value;
+        formData.secondary_phone_no = document.getElementById('secondary_phone_no').value;
+        formData.gst_no = document.getElementById('gst_no').value;
+        formData.primary_dept = document.getElementById('primary_dept').value;
+        formData.secondary_dept = document.getElementById('secondary_dept').value;
+        formData.address = document.getElementById('address').value;
+
+    }  else if (formType === 'setting_plug_trace') {
+        let rows = document.getElementById('tableBody-1').getElementsByTagName('tr');
+        formData.rows = [];
+        for (let i = 0; i < rows.length; i++) {
+            let row = rows[i];
+            let rowData = {
+                masterName: row.cells[1].innerText || row.cells[1].querySelector('input')?.value || '',
+                idNo: row.cells[2].innerText || row.cells[2].querySelector('input')?.value || '',
+                calibrationReportNo: row.cells[3].innerText || row.cells[3].querySelector('input')?.value || '',
+                validUpto: row.cells[4].innerText || row.cells[4].querySelector('input')?.value || '',
+                traceability: row.cells[5].innerText || row.cells[5].querySelector('input')?.value || '',
+                id: row.getAttribute('data-id') // Get the row ID if it exists
+            };
+            formData.rows.push(rowData);
+        }
+    }
+else if (formType === 'setting_ring_trace') {
+        // Collect setting_ring_trace table data
+        let rows = document.getElementById('tableBody-2').getElementsByTagName('tr');
+        formData.rows = [];
+        for (let i = 0; i < rows.length; i++) {
+            let row = rows[i];
+             
+            let rowData = {
+                masterName: row.cells[1].innerText|| row.cells[1].querySelector('input')?.value || '',
+                idNo: row.cells[2].innerText|| row.cells[2].querySelector('input')?.value || '',
+                calibrationReportNo: row.cells[3].innerText|| row.cells[3].querySelector('input')?.value || '',
+                validUpto: row.cells[4].innerText|| row.cells[4].querySelector('input')?.value || '',
+                traceability: row.cells[5].innerText|| row.cells[5].querySelector('input')?.value || '',
+                id: row.getAttribute('data-id') // Get the row ID if it exists
+            };
+            formData.rows.push(rowData);
+        }
+
+    } else if (formType === 'setting_plug_master') {
+        // Collect setting_plug_master table data
+        let rows = document.getElementById('tableBody-3').getElementsByTagName('tr');
+        formData.rows = [];
+        for (let i = 0; i < rows.length; i++) {
+            let row = rows[i];
+             // Check if the row is marked as new
+             
+            let rowData = {
+                parameterName: row.cells[1].innerText|| row.cells[1].querySelector('input')?.value || '',
+                refSize: row.cells[2].innerText|| row.cells[2].querySelector('input')?.value || '',
+                nominal: row.cells[3].innerText|| row.cells[3].querySelector('input')?.value || '',
+                id: row.getAttribute('data-id') // Get the row ID if it exists
+            };
+            formData.rows.push(rowData);
+        }
+
+    } else if (formType === 'setting_ring_master') {
+        // Collect setting_ring_master table data
+        let rows = document.getElementById('tableBody-4').getElementsByTagName('tr');
+        formData.rows = [];
+        for (let i = 0; i < rows.length; i++) {
+            let row = rows[i];
+            
+            let rowData = {
+                parameterName: row.cells[1].innerText|| row.cells[1].querySelector('input')?.value || '',
+                refSize: row.cells[2].innerText|| row.cells[2].querySelector('input')?.value || '',
+                nominal: row.cells[3].innerText|| row.cells[3].querySelector('input')?.value || '',
+                id: row.getAttribute('data-id') // Get the row ID if it exists
+            };
+            formData.rows.push(rowData);
+        }
+
+    } else if (formType === 'engineer_manager_details') {
+        // Collect engineer_manager_details table data
+        let rows = document.getElementById('tableBody-5').getElementsByTagName('tr');
+        formData.rows = [];
+        for (let i = 0; i < rows.length; i++) {
+            let row = rows[i];
+            
+            let rowData = {
+                calibEngineer: row.cells[1].innerText|| row.cells[1].querySelector('input')?.value || '',
+                qualityManager: row.cells[2].innerText|| row.cells[2].querySelector('input')?.value || '',
+                certificateNo: row.cells[3].innerText|| row.cells[3].querySelector('input')?.value || '',
+                id: row.getAttribute('data-id') // Get the row ID if it exists
+            };
+            formData.rows.push(rowData);
+        }
+    }
+
+    // Log the form data and type for debugging
+    console.log("formData", formData);
+    console.log("formType", formType);
+
+    // Send formData to the server
+    sendDataToServer(formData, formType);
+}
+const csrftoken = getCookie('csrftoken');
+// Function to send data to the server
+function sendDataToServer(formData, formType) {
+    fetch('/master/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken // Use Django's CSRF token if needed
+        },
+        body: JSON.stringify({
+            formType: formType,
+            formData: formData
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Success:', data);
+        showNotification('Data saved successfully', true); // Show success notification
+        // Handle any additional success logic if needed
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        showNotification('Error saving data: ' + error.message, false); // Show error notification
+    });
+}
+
+
+
+// Function to get the CSRF token
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+
+// Function to handle row selection
+function handleRowSelection(event) {
+    var selectedRow = event.currentTarget;
+    var allRows = document.querySelectorAll('table tbody tr');
+
+    // Remove 'selected' class and background color for all rows
+    allRows.forEach(row => {
+        row.classList.remove('selected');
+    });
+
+    // Toggle 'selected' class for the clicked row and set its background color
+    selectedRow.classList.add('selected');
+}
+
+// Function to get form type based on the selected row
+function getFormTypeFromSelectedRow(selectedRow) {
+    // Assuming each table has a unique ID for form types
+    var tableId = selectedRow.closest('table').id;
+
+    switch (tableId) {
+        case 'tableBody-1':
+            return 'setting_plug_trace';
+        case 'tableBody-2':
+            return 'setting_ring_trace';
+        case 'tableBody-3':
+            return 'setting_plug_master';
+        case 'tableBody-4':
+            return 'setting_ring_master';
+        case 'tableBody-5':
+            return 'engineer_manager_details';
+        default:
+            return null; // No form type detected
+    }
+}
+
+function deleteSelectedRows() {
+    var selectedRow = document.querySelector('.selected');
+    console.log("selectedRow", selectedRow);
+    
+    if (selectedRow) {
+        // Now you can proceed with deleting the row using AJAX
+        var tableBodyId = selectedRow.closest('tbody').id;
+        console.log('tableBodyId',tableBodyId);
+        var rowId = selectedRow.getAttribute('data-id');
+        console.log('rowId',rowId);
+
+        var dataToDelete = {};
+        dataToDelete[tableBodyId] = [parseInt(rowId)];
+
+        $.ajax({
+            type: 'DELETE',
+            url: '/master/',
+            data: JSON.stringify({
+                formType: tableBodyId,
+                idsToDelete: [parseInt(rowId)] // Send IDs to delete
+            }),
+            contentType: 'application/json',
+            success: function(response) {
+                console.log(response);
+                selectedRow.remove();
+                showNotification('Data deleted successfully', true); 
+            },
+            error: function(error) {
+                console.error('Error:', error);
+                showNotification('Error: Failed to delete data', false); 
+            }
+        });
+    } else {
+        // Inform the user that no row is selected
+        console.log('No row selected');
+        showNotification('No row selected', false); 
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    var rows = document.querySelectorAll('table tbody tr');
+    rows.forEach(function (row) {
+        row.addEventListener('click', handleRowSelection);
+    });
+});
+
+
+
+  // Function to show a notification with an OK button
+  function showNotification(message, isSuccess) {
+    var notificationElement = document.getElementById('notification');
+    notificationElement.textContent = message;
+
+    if (isSuccess) {
+        notificationElement.style.backgroundColor = 'lightgreen';
+    } else {
+        notificationElement.style.backgroundColor = 'coral';
+    }
+
+    // Add an "OK" button to the notification
+    var okButton = document.createElement('button');
+    okButton.textContent = 'OK';
+    okButton.style.display = 'block';   // Make the button a block element
+    okButton.style.margin = 'auto';     // Center the button horizontally
+    okButton.style.marginTop = '10px';  // Add some top margin for spacing
+    okButton.style.padding = '10px';
+    okButton.style.height = '40px';     // Set the button height
+    okButton.style.width = '80px';      // Set the button width
+    okButton.style.border = 'none';     // Remove the default button border
+    okButton.style.backgroundColor = 'orangered'; // Red background color
+    okButton.style.color = 'white';     // White text color
+
+    // Add event listener to the OK button
+    okButton.addEventListener('click', function() {
+        // Redirect to the desired page (adjust the URL if needed)
+        window.location.href = '{% url "master" %}';
+
+        // Call clickBasedOnSessionStorage to simulate clicking the right box
+        clickBasedOnSessionStorage();
+    });
+
+    notificationElement.appendChild(okButton);
+
+    // Center the notification vertically and horizontally
+    notificationElement.style.display = 'flex';
+    notificationElement.style.flexDirection = 'column';
+    notificationElement.style.alignItems = 'center';
+    notificationElement.style.textAlign = 'center';
+    notificationElement.style.justifyContent = 'center';
+    notificationElement.style.top = '50%';
+    notificationElement.style.left = '50%';
+    notificationElement.style.transform = 'translate(-50%, -50%)';
+    notificationElement.style.zIndex = '1000';
+
+    // Display the notification
+    notificationElement.style.display = 'block';
+}
+
+
+window.addEventListener('DOMContentLoaded', (event) => {
+            var inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.setAttribute('autocomplete', 'off');
+            });
+        });
+
+
+
+</script>
+
+{% endblock content %}
